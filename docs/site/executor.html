@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Executor and Batching - Solana Monad SDK</title>
+<style>
+body{font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;margin:24px;color:#102a43}
+header{max-width:1100px;margin:0 auto 24px}
+.container{max-width:1100px;margin:0 auto;background:#fff;padding:24px;border-radius:10px;box-shadow:0 4px 24px rgba(16,42,67,0.08)}
+img.banner{width:100%;height:auto;border-radius:8px;margin-bottom:16px}
+pre{background:#0f1724;color:#e6eef8;padding:12px;border-radius:6px;overflow:auto}
+code{background:#f1f5f9;padding:2px 4px;border-radius:4px}
+h1,h2,h3{color:#0b3b53}
+a{color:#0066cc}
+</style>
+</head>
+<body>
+<header>
+<img src="../../public/banner.png" class="banner" alt="Solana Monad SDK Banner"/>
+</header>
+<main class="container">
+<h1>Executor and Batching</h1>
+
+<p>The executor implements a simple, deterministic batching strategy:</p>
+
+<ul><li><code>planParallelBatches(instructions)</code>: Greedy algorithm that scans instructions and places each instruction into the first batch where it does not share any writable account with existing instructions in that batch. If none found, it creates a new batch.</li>
+</ul>
+
+<ul><li><code>buildTransactions(schedule)</code>: Transforms batches into <code>TransactionLike</code> descriptors where each batch becomes one transaction-like unit.</li>
+</ul>
+
+<ul><li><code>executeBatches(batches)</code>: Executes batches sequentially (but each batch contains instructions that are safe to run in parallel). Execution is optimistic — it assumes intra-batch instructions do not conflict because the validator and batcher ensured no shared writable accounts.</li>
+</ul>
+
+<p>This approach is intentionally simple and deterministic while being practical: it maximizes parallelism without risking write conflicts inside the same batch.</p>
+
+
+</main>
+</body>
+</html>

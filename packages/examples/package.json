@@ -1,0 +1,16 @@
+{
+  "name": "@sdk/example",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "example-simple": "node dist/example-simple.js",
+    "example-conflict": "node dist/example-conflict.js",
+    "example-send": "node dist/example-send.js"
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.83.0",
+    "@sdk/sdk": "1.0.0"
+  }
+}

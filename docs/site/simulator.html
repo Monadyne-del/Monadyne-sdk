@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Simulator - Solana Monad SDK</title>
+<style>
+body{font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;margin:24px;color:#102a43}
+header{max-width:1100px;margin:0 auto 24px}
+.container{max-width:1100px;margin:0 auto;background:#fff;padding:24px;border-radius:10px;box-shadow:0 4px 24px rgba(16,42,67,0.08)}
+img.banner{width:100%;height:auto;border-radius:8px;margin-bottom:16px}
+pre{background:#0f1724;color:#e6eef8;padding:12px;border-radius:6px;overflow:auto}
+code{background:#f1f5f9;padding:2px 4px;border-radius:4px}
+h1,h2,h3{color:#0b3b53}
+a{color:#0066cc}
+</style>
+</head>
+<body>
+<header>
+<img src="../../public/banner.png" class="banner" alt="Solana Monad SDK Banner"/>
+</header>
+<main class="container">
+<h1>Simulator</h1>
+
+<p>The simulator builds a task graph where vertices are instructions and directed edges represent write dependencies (when multiple instructions declare the same writable account). It then:</p>
+
+<ul><li>Detects cycles and errors if present.</li>
+<li>Produces parallel layers via Kahn's algorithm: each layer can be executed in parallel.</li>
+<li>Runs a deterministic pseudo-random simulation that assigns compute units and latencies per instruction based on a schedule seed. This allows repeatable profiling and experimentation.</li>
+</ul>
+
+<p>The simulator output includes total compute units, per-instruction compute and latency, and layer definitions for parallel execution planning.</p>
+
+
+</main>
+</body>
+</html>

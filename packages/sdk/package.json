@@ -1,0 +1,14 @@
+{
+  "name": "@sdk/sdk",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "description": "Core SDK implementing schedule, validator, executor adapted for Solana",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepack": "npm run build"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

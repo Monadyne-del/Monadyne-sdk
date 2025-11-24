@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Getting Started - Solana Monad SDK</title>
+<style>
+body{font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;margin:24px;color:#102a43}
+header{max-width:1100px;margin:0 auto 24px}
+.container{max-width:1100px;margin:0 auto;background:#fff;padding:24px;border-radius:10px;box-shadow:0 4px 24px rgba(16,42,67,0.08)}
+img.banner{width:100%;height:auto;border-radius:8px;margin-bottom:16px}
+pre{background:#0f1724;color:#e6eef8;padding:12px;border-radius:6px;overflow:auto}
+code{background:#f1f5f9;padding:2px 4px;border-radius:4px}
+h1,h2,h3{color:#0b3b53}
+a{color:#0066cc}
+</style>
+</head>
+<body>
+<header>
+<img src="../../public/banner.png" class="banner" alt="Solana Monad SDK Banner"/>
+</header>
+<main class="container">
+<h1>Getting Started</h1>
+
+<p>This quickstart walks you through installing and using the Solana Monad SDK in a development environment.</p>
+
+<p>Prerequisites</p>
+
+<ul><li>Node.js 18+ and <code>pnpm</code> installed</li>
+<li>A working Solana cluster endpoint for <code>example-send</code> (Devnet recommended)</li>
+</ul>
+
+<p>Install & build</p>
+
+<pre><code class="lang-bash">cd solana-monad-sdk
+pnpm install
+pnpm -w -r run build
+pnpm -F @sdk/example build
+</code></pre>
+
+<p>Run examples</p>
+
+<pre><code class="lang-bash"># Run the simple local example (no network required)
+node packages/examples/dist/examples/example-simple.js
+
+# Run the conflict detection example
+node packages/examples/dist/examples/example-conflict.js
+
+# Run example that sends to Devnet (requires network and a SOL-funded payer)
+node packages/examples/dist/examples/example-send.js
+</code></pre>
+
+<p>Project layout</p>
+
+<ul><li><code>packages/sdk</code>: core TypeScript SDK (schedule, validator, executor, util)</li>
+<li><code>packages/simulator</code>: DAG builder and deterministic simulator</li>
+<li><code>packages/examples</code>: runnable examples that demonstrate common patterns</li>
+<li><code>docs</code>: documentation (this folder)</li>
+<li><code>public/banner.jpg</code>: professional banner image used in documentation</li>
+</ul>
+
+<p>Support & contribution</p>
+
+<ul><li>Open issues and PRs on the repository</li>
+<li>Follow code style: TypeScript, strict mode, no runtime side effects in core modules</li>
+</ul>
+
+<p>Legal</p>
+
+<p>Licensed under MIT.</p>
+
+
+</main>
+</body>
+</html>

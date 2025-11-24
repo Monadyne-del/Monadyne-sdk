@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Schedule Format (JSON) - Solana Monad SDK</title>
+<style>
+body{font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;margin:24px;color:#102a43}
+header{max-width:1100px;margin:0 auto 24px}
+.container{max-width:1100px;margin:0 auto;background:#fff;padding:24px;border-radius:10px;box-shadow:0 4px 24px rgba(16,42,67,0.08)}
+img.banner{width:100%;height:auto;border-radius:8px;margin-bottom:16px}
+pre{background:#0f1724;color:#e6eef8;padding:12px;border-radius:6px;overflow:auto}
+code{background:#f1f5f9;padding:2px 4px;border-radius:4px}
+h1,h2,h3{color:#0b3b53}
+a{color:#0066cc}
+</style>
+</head>
+<body>
+<header>
+<img src="../../public/banner.png" class="banner" alt="Solana Monad SDK Banner"/>
+</header>
+<main class="container">
+<h1>Schedule Format (JSON)</h1>
+
+<p>A schedule is represented as JSON with the following structure:</p>
+
+<ul><li><code>id</code>: deterministic id of the schedule (string)</li>
+<li><code>createdAt</code>: ISO timestamp</li>
+<li><code>instructions</code>: array of atomic instructions</li>
+</ul>
+
+<p>Each <code>AtomicInstruction</code> has:</p>
+
+<ul><li><code>id</code>: deterministic instruction id (string)</li>
+<li><code>programId</code>: program public key (string)</li>
+<li><code>accounts</code>: array of account meta objects</li>
+</ul>
+<p>  - <code>pubkey</code>: account public key (string)</p>
+<p>  - <code>writable</code>: boolean</p>
+<p>  - <code>signer</code> (optional): boolean</p>
+<ul><li><code>data</code>: arbitrary payload interpreted by the program (object)</li>
+</ul>
+
+<p>Example:</p>
+
+<pre><code class="lang-json">{
+  "id": "abc123...",
+  "createdAt": "2025-11-24T12:00:00.000Z",
+  "instructions": [
+    {
+      "id": "ins1",
+      "programId": "Sys1111111111111111111111111111111111111",
+      "accounts": [
+        {"pubkey":"FromA...","writable":true,"signer":true},
+        {"pubkey":"ToA...","writable":true}
+      ],
+      "data": {"type":"transfer","lamports":1000}
+    }
+  ]
+}
+</code></pre>
+
+
+</main>
+</body>
+</html>

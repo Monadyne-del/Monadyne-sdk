@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Usage Guides - Solana Monad SDK</title>
+<style>
+body{font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;margin:24px;color:#102a43}
+header{max-width:1100px;margin:0 auto 24px}
+.container{max-width:1100px;margin:0 auto;background:#fff;padding:24px;border-radius:10px;box-shadow:0 4px 24px rgba(16,42,67,0.08)}
+img.banner{width:100%;height:auto;border-radius:8px;margin-bottom:16px}
+pre{background:#0f1724;color:#e6eef8;padding:12px;border-radius:6px;overflow:auto}
+code{background:#f1f5f9;padding:2px 4px;border-radius:4px}
+h1,h2,h3{color:#0b3b53}
+a{color:#0066cc}
+</style>
+</head>
+<body>
+<header>
+<img src="../../public/banner.png" class="banner" alt="Solana Monad SDK Banner"/>
+</header>
+<main class="container">
+<h1>Usage Guides</h1>
+
+<p>This section contains practical guides for common tasks when using the Solana Monad SDK.</p>
+
+<h2>Building Schedules for High Throughput</h2>
+
+<p>1. Create small atomic instructions that declare only the accounts they touch.</p>
+<p>2. Prefer making read-only accounts non-writable to maximize parallelism.</p>
+<p>3. Use <code>createAtomicInstruction</code> and <code>createSchedule</code> to assemble and <code>validateSchedule</code> before execution.</p>
+<p>4. Use <code>planParallelBatches</code> to group non-conflicting instructions into optimistic batches.</p>
+
+<p>Example:</p>
+
+<pre><code class="lang-ts">const instrA = createAtomicInstruction({ programId: 'ProgA...', accounts: [{ pubkey: 'A', writable: true }], data: { op: 'a' } });
+const instrB = createAtomicInstruction({ programId: 'ProgB...', accounts: [{ pubkey: 'B', writable: true }], data: { op: 'b' } });
+const schedule = createSchedule([instrA, instrB]);
+const v = validateSchedule(schedule);
+if (!v.ok) throw new Error(v.issues.join('\n'));
+const batches = planParallelBatches(schedule.instructions);
+</code></pre>
+
+<h2>Handling Conflicts</h2>
+
+<ul><li>When <code>validateSchedule</code> reports <code>writable conflict</code>, you have two options:</li>
+</ul>
+<p>  - Reorder instructions to serialize conflicting writes.</p>
+<p>  - Split schedule into dependent schedules where conflicts are intentionally ordered.</p>
+
+<h2>Integrating with Solana Transactions</h2>
+
+<ul><li>Each optimistic batch can be transformed into a single transaction containing multiple instructions.</li>
+<li>The example <code>example-send.ts</code> shows transforming a batch into a Solana <code>Transaction</code> and sending it with <code>sendAndConfirmTransaction</code>.</li>
+</ul>
+
+<h2>Testing and Simulation</h2>
+
+<ul><li>Use <code>@sdk/simulator</code> to build a DAG from instructions and produce layered parallel execution plans.</li>
+<li>Run deterministic simulations with <code>simulate</code> to measure compute units and latency profiles.</li>
+</ul>
+
+<h2>Best Practices</h2>
+
+<ul><li>Keep instruction payloads small.</li>
+<li>Prefer explicit account declaration and conservative writable flags.</li>
+<li>Validate schedules in CI to catch duplicates and format problems early.</li>
+</ul>
+
+
+</main>
+</body>
+</html>

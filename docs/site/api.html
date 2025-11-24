@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>API Reference - Solana Monad SDK</title>
+<style>
+body{font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;margin:24px;color:#102a43}
+header{max-width:1100px;margin:0 auto 24px}
+.container{max-width:1100px;margin:0 auto;background:#fff;padding:24px;border-radius:10px;box-shadow:0 4px 24px rgba(16,42,67,0.08)}
+img.banner{width:100%;height:auto;border-radius:8px;margin-bottom:16px}
+pre{background:#0f1724;color:#e6eef8;padding:12px;border-radius:6px;overflow:auto}
+code{background:#f1f5f9;padding:2px 4px;border-radius:4px}
+h1,h2,h3{color:#0b3b53}
+a{color:#0066cc}
+</style>
+</head>
+<body>
+<header>
+<img src="../../public/banner.png" class="banner" alt="Solana Monad SDK Banner"/>
+</header>
+<main class="container">
+<h1>API Reference</h1>
+
+<p>This document describes the public API exported by <code>@sdk/sdk</code>.</p>
+
+<h2>Exports</h2>
+
+<p>From <code>packages/sdk/src/index.ts</code> the SDK exports:</p>
+
+<ul><li><code>createAtomicInstruction(props)</code> → <code>AtomicInstruction</code></li>
+<li><code>createSchedule(instructions, id?)</code> → <code>Schedule</code></li>
+<li><code>serializeSchedule(schedule)</code> → <code>string</code></li>
+<li><code>deserializeSchedule(serialized)</code> → <code>Schedule</code></li>
+<li><code>hashSchedule(schedule)</code> → <code>string</code></li>
+<li><code>generateDeterministicId(seed)</code> → <code>string</code></li>
+<li><code>validateInstruction(instr)</code> → <code>{ ok, issues, warnings }</code></li>
+<li><code>detectDuplicateIds(schedule)</code> → <code>string[]</code></li>
+<li><code>detectAccountConflicts(schedule)</code> → <code>string[]</code></li>
+<li><code>validateSchedule(schedule)</code> → <code>{ ok, issues, warnings }</code></li>
+<li><code>planParallelBatches(instructions)</code> → <code>AtomicInstruction[][]</code></li>
+<li><code>buildTransactions(schedule)</code> → <code>TransactionLike[]</code></li>
+<li><code>executeBatches(batches, options?)</code> → <code>Promise&lt;results&gt;</code></li>
+</ul>
+
+
+<h2>Types</h2>
+
+<h3>AccountMeta</h3>
+<ul><li><code>pubkey: string</code> (base58-like)</li>
+<li><code>writable: boolean</code></li>
+<li><code>signer?: boolean</code></li>
+</ul>
+
+<h3>AtomicInstruction</h3>
+<ul><li><code>id: string</code> deterministic id</li>
+<li><code>programId: string</code> program pubkey</li>
+<li><code>accounts: AccountMeta[]</code></li>
+<li><code>data?: any</code> program-defined payload</li>
+</ul>
+
+<h3>Schedule</h3>
+<ul><li><code>id: string</code></li>
+<li><code>instructions: AtomicInstruction[]</code></li>
+<li><code>createdAt: string</code> ISO timestamp</li>
+</ul>
+
+<h3>ValidationResult</h3>
+<ul><li><code>ok: boolean</code></li>
+<li><code>issues: string[]</code> critical problems</li>
+<li><code>warnings: string[]</code> non-fatal issues</li>
+</ul>
+
+<h2>Examples</h2>
+
+<p>Creating and validating a schedule:</p>
+
+<pre><code class="lang-ts">import { createAtomicInstruction, createSchedule, validateSchedule } from '@sdk/sdk';
+
+const instr = createAtomicInstruction({ programId: 'Sys1111111111111111111111111111111111111', accounts: [{ pubkey: 'A...', writable: true, signer: true }], data: { foo: 'bar' } });
+const schedule = createSchedule([instr]);
+const v = validateSchedule(schedule);
+if (!v.ok) console.error(v.issues);
+</code></pre>
+
+<p>Batch planning and execution:</p>
+
+<pre><code class="lang-ts">import { planParallelBatches, buildTransactions, executeBatches } from '@sdk/sdk';
+
+const batches = planParallelBatches(schedule.instructions);
+const txs = buildTransactions(schedule);
+const results = await executeBatches(txs, { delayPerBatchMs: 50 });
+</code></pre>
+
+
+<h2>Notes on Determinism</h2>
+<ul><li>IDs are generated with sha256 of deterministic input and truncated.</li>
+<li>Simulation and hashing use Node <code>crypto</code> and are deterministic across runs.</li>
+</ul>
+
+
+</main>
+</body>
+</html>

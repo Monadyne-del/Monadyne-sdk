@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Developer Guide - Solana Monad SDK</title>
+<style>
+body{font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;margin:24px;color:#102a43}
+header{max-width:1100px;margin:0 auto 24px}
+.container{max-width:1100px;margin:0 auto;background:#fff;padding:24px;border-radius:10px;box-shadow:0 4px 24px rgba(16,42,67,0.08)}
+img.banner{width:100%;height:auto;border-radius:8px;margin-bottom:16px}
+pre{background:#0f1724;color:#e6eef8;padding:12px;border-radius:6px;overflow:auto}
+code{background:#f1f5f9;padding:2px 4px;border-radius:4px}
+h1,h2,h3{color:#0b3b53}
+a{color:#0066cc}
+</style>
+</head>
+<body>
+<header>
+<img src="../../public/banner.png" class="banner" alt="Solana Monad SDK Banner"/>
+</header>
+<main class="container">
+<h1>Developer Guide</h1>
+
+<p>This guide helps contributors understand the codebase conventions, build process, and how to extend the SDK.</p>
+
+<p>Repository layout</p>
+
+<ul><li><code>packages/sdk/src</code>: core implementation. Keep modules focused: <code>schedule.ts</code>, <code>validator.ts</code>, <code>executor.ts</code>, <code>util.ts</code>.</li>
+<li><code>packages/simulator/src</code>: DAG builder and simulator.</li>
+<li><code>packages/examples</code>: runnable examples demonstrating validation, batching and execution.</li>
+</ul>
+
+<p>Building and testing</p>
+
+<ul><li>Use <code>pnpm</code> and compile with <code>tsc</code>.</li>
+<li>Keep TypeScript <code>strict</code> settings enabled; write runtime-safe code.</li>
+</ul>
+
+<p>Extending the SDK</p>
+
+<ul><li>To add a new validator check, add a function in <code>validator.ts</code> and include it in <code>validateSchedule</code>.</li>
+<li>To change batching behavior, implement a new planner in <code>executor.ts</code> and expose it from <code>index.ts</code>.</li>
+</ul>
+
+<p>Coding conventions</p>
+
+<ul><li>Prefer explicit types for exported functions and objects.</li>
+<li>Use <code>crypto.createHash('sha256')</code> for deterministic ids and hashes.</li>
+</ul>
+
+<p>Release process</p>
+
+<ul><li>Tag releases with semantic versioning.</li>
+<li>Update <code>CHANGELOG.md</code> (create one if absent) with summary of features and breaking changes.</li>
+</ul>
+
+
+</main>
+</body>
+</html>

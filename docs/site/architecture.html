@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Architecture — Monad Concepts Adapted to Solana - Solana Monad SDK</title>
+<style>
+body{font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;margin:24px;color:#102a43}
+header{max-width:1100px;margin:0 auto 24px}
+.container{max-width:1100px;margin:0 auto;background:#fff;padding:24px;border-radius:10px;box-shadow:0 4px 24px rgba(16,42,67,0.08)}
+img.banner{width:100%;height:auto;border-radius:8px;margin-bottom:16px}
+pre{background:#0f1724;color:#e6eef8;padding:12px;border-radius:6px;overflow:auto}
+code{background:#f1f5f9;padding:2px 4px;border-radius:4px}
+h1,h2,h3{color:#0b3b53}
+a{color:#0066cc}
+</style>
+</head>
+<body>
+<header>
+<img src="../../public/banner.png" class="banner" alt="Solana Monad SDK Banner"/>
+</header>
+<main class="container">
+<h1>Architecture — Monad Concepts Adapted to Solana</h1>
+
+<p>This document explains how the core Monad technologies are adapted to Solana instruction execution model:</p>
+
+<ul><li>Optimistic Parallel Execution: We assume instructions can be executed in parallel when they do not declare conflicting writable accounts. The SDK builds a schedule and applies greedy batching to group non-conflicting instructions into parallel batches for optimistic execution.</li>
+</ul>
+
+<ul><li>Deterministic Validation: Before execution, the schedule is validated deterministically. Validation checks include instruction id uniqueness, account shape and pubkey format, program id format, and writable-account conflict detection. The validator returns an explicit set of issues and warnings so callers can decide to abort or reconcile.</li>
+</ul>
+
+<ul><li>DAG Scheduling: When conflicts exist (shared writable accounts), the simulator can build a DAG representing write dependencies. The DAG is used to compute topological layers which represent safe parallel execution layers. This DAG approach ensures ordering where necessary and parallelism where possible.</li>
+</ul>
+
+<ul><li>Account Conflict Detection: Conflict detection primarily focuses on writable accounts: if two instructions declare the same writable account, they conflict and cannot be placed in the same optimistic parallel batch. The validator reports those conflicts precisely.</li>
+</ul>
+
+<p>The result is a lightweight, deterministic framework that maps Monad concepts into Solana's account-instruction model while remaining easy to simulate and to transform into real Solana transactions in examples.</p>
+
+
+</main>
+</body>
+</html>
